@@ -116,17 +116,17 @@ st.write("Autonomous Multi-Agent System for Grocery Freshness, Dynamic Markdowns
 # Top KPI Metric Cards
 col1, col2, col3, col4 = st.columns(4)
 
-total_SKUs = len(recommendations)
+total_skus = len(recommendations)
 high_risk = sum(1 for r in recommendations if r["risk_level"] in ("CRITICAL", "HIGH", "EXPIRED"))
 stockout_alerts = sum(1 for r in recommendations if r["action"] in ("REPLENISH", "TRANSFER_IN"))
 salvaged_val = sum(r["expected_effect"].get("salvaged_revenue", 0.0) for r in recommendations)
 
 with col1:
-    st.metric("📦 Monitored SKU", total_SKUs, help="Total active product-store instances")
+    st.metric("📦 Monitored SKUs", total_skus, help="Total active product-store instances")
 with col2:
     st.metric("⚠️ Perishability Risk", f"{high_risk} ", delta=f"{metrics['freshguard_ai']['waste_units']} units at risk", delta_color="inverse")
 with col3:
-    st.metric("📉 Stockout Alerts", f"{stockout_alerts}", help="SKUs breached below reorder point")
+    st.metric("📉 Stockout Alerts", f"{stockout_alerts} ", help="SKUs breached below reorder point")
 with col4:
     st.metric("💰 Salvaged Revenue", f"₹{salvaged_val:.2f}", delta=f"-{metrics['improvements']['waste_reduction_pct']}% waste")
 
@@ -160,13 +160,13 @@ with tab1:
     if risk_filter != "All Risks":
         filtered_recs = [r for r in filtered_recs if r["risk_level"] == risk_filter]
     if search_query:
-        filtered_recs = [r for r in filtered_recs if search_query in r["name"].lower() or search_query in r["SKU"].lower()]
+        filtered_recs = [r for r in filtered_recs if search_query in r["name"].lower() or search_query in r["sku"].lower()]
 
     # Format Table DataFrame
     table_data = []
     for r in filtered_recs:
         table_data.append({
-           "SKU": r.get("SKU"),
+            "Product ID": r["sku"],
             "Product": r["name"],
             "Store": r["store"],
             "Stock": r["current_stock"],
@@ -174,7 +174,6 @@ with tab1:
             "Days Left": r["effective_days"],
             "Price": f"₹{r['unit_price']:.2f}",
             "Risk": r["risk_level"],
-            
             "Action": r["action_label"],
             "Confidence": f"{r['confidence']}%",
             "Status": r["approval_status"]
@@ -187,13 +186,13 @@ with tab1:
 
     # Interactive Product Inspector & Approval Form
     st.markdown("### 🔎 Product Inspector & Planner Action")
-    selected_SKU = st.selectbox(
+    selected_sku = st.selectbox(
         "Select Product to Review & Decide",
         [f"{r['id']} | {r['name']} ({r['store']})" for r in filtered_recs] if filtered_recs else []
     )
 
-    if selected_SKU:
-        sel_id = selected_SKU.split(" | ")[0]
+    if selected_sku:
+        sel_id = selected_sku.split(" | ")[0]
         sel_rec = next((r for r in recommendations if r["id"] == sel_id), None)
         
         if sel_rec:
