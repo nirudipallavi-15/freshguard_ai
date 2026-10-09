@@ -107,7 +107,7 @@ metrics = EvaluationEngine.run_comparison(
     recommendations,
     demand_multiplier=demand_mult,
     shelf_life_delta=shelf_delta
-)rrrrr
+)
 
 # Header
 st.title("🌱 FreshGuard AI — Zero-Waste Grocery Management")
