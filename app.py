@@ -116,17 +116,17 @@ st.write("Autonomous Multi-Agent System for Grocery Freshness, Dynamic Markdowns
 # Top KPI Metric Cards
 col1, col2, col3, col4 = st.columns(4)
 
-total_skus = len(recommendations)
+total_product ids = len(recommendations)
 high_risk = sum(1 for r in recommendations if r["risk_level"] in ("CRITICAL", "HIGH", "EXPIRED"))
 stockout_alerts = sum(1 for r in recommendations if r["action"] in ("REPLENISH", "TRANSFER_IN"))
 salvaged_val = sum(r["expected_effect"].get("salvaged_revenue", 0.0) for r in recommendations)
 
 with col1:
-    st.metric("📦 Monitored SKUs", total_skus, help="Total active product-store instances")
+    st.metric("📦 Monitored product ID", total_product ids, help="Total active product-store instances")
 with col2:
     st.metric("⚠️ Perishability Risk", f"{high_risk} ", delta=f"{metrics['freshguard_ai']['waste_units']} units at risk", delta_color="inverse")
 with col3:
-    st.metric("📉 Stockout Alerts", f"{stockout_alerts}", help="SKUs breached below reorder point")
+    st.metric("📉 Stockout Alerts", f"{stockout_alerts}", help="product ids breached below reorder point")
 with col4:
     st.metric("💰 Salvaged Revenue", f"₹{salvaged_val:.2f}", delta=f"-{metrics['improvements']['waste_reduction_pct']}% waste")
 
@@ -151,7 +151,7 @@ with tab1:
     with fcol2:
         risk_filter = st.selectbox("Risk Filter", ["All Risks", "CRITICAL", "HIGH", "MEDIUM", "LOW", "EXPIRED"])
     with fcol3:
-        search_query = st.text_input("Search Product / SKU", "").lower()
+        search_query = st.text_input("Search Product / product id", "").lower()
 
     # Filtered Records
     filtered_recs = recommendations
@@ -160,13 +160,13 @@ with tab1:
     if risk_filter != "All Risks":
         filtered_recs = [r for r in filtered_recs if r["risk_level"] == risk_filter]
     if search_query:
-        filtered_recs = [r for r in filtered_recs if search_query in r["name"].lower() or search_query in r["sku"].lower()]
+        filtered_recs = [r for r in filtered_recs if search_query in r["name"].lower() or search_query in r["product id"].lower()]
 
     # Format Table DataFrame
     table_data = []
     for r in filtered_recs:
         table_data.append({
-            "SKU": r["sku"],
+            "product id": r["product id"],
             "Product": r["name"],
             "Store": r["store"],
             "Stock": r["current_stock"],
@@ -187,13 +187,13 @@ with tab1:
 
     # Interactive Product Inspector & Approval Form
     st.markdown("### 🔎 Product Inspector & Planner Action")
-    selected_sku = st.selectbox(
+    selected_product id = st.selectbox(
         "Select Product to Review & Decide",
         [f"{r['id']} | {r['name']} ({r['store']})" for r in filtered_recs] if filtered_recs else []
     )
 
-    if selected_sku:
-        sel_id = selected_sku.split(" | ")[0]
+    if selected_product id:
+        sel_id = selected_product id.split(" | ")[0]
         sel_rec = next((r for r in recommendations if r["id"] == sel_id), None)
         
         if sel_rec:
@@ -269,9 +269,9 @@ with tab4:
         st.markdown("### 🏢 Traditional Baseline Policy")
         st.caption("Fixed reorder threshold (order 25 when stock < 15), zero proactive markdowns, siloed stores.")
         st.write(f"**Projected Waste Units:** {metrics['baseline']['waste_units']} units")
-        st.write(f"**Discarded Waste Cost:** ${metrics['baseline']['waste_cost']:.2f}")
+        st.write(f"**Discarded Waste Cost:** ₹{metrics['baseline']['waste_cost']:.2f}")
         st.write(f"**Stockout Units:** {metrics['baseline']['stockout_units']} units")
-        st.write(f"**Lost Customer Sales:** ${metrics['baseline']['lost_revenue']:.2f}")
+        st.write(f"**Lost Customer Sales:** ₹{metrics['baseline']['lost_revenue']:.2f}")
         st.write(f"**Food Waste to Landfill:** {metrics['baseline']['food_waste_kg']} kg")
         st.write(f"**Landfill GHG Emissions:** {metrics['baseline']['co2e_emissions_kg']} kg CO₂e")
 
@@ -279,9 +279,9 @@ with tab4:
         st.markdown("### 🌱 FreshGuard Agentic AI Policy")
         st.caption("Freshness-aware replenishment, cross-store shuttles, dynamic markdowns.")
         st.write(f"**Projected Waste Units:** {metrics['freshguard_ai']['waste_units']} units ({metrics['improvements']['waste_reduction_pct']}% reduction)")
-        st.write(f"**Discarded Waste Cost:** ${metrics['freshguard_ai']['waste_cost']:.2f}")
+        st.write(f"**Discarded Waste Cost:** ₹{metrics['freshguard_ai']['waste_cost']:.2f}")
         st.write(f"**Stockout Units:** {metrics['freshguard_ai']['stockout_units']} units")
-        st.write(f"**Salvaged Revenue:** +${metrics['freshguard_ai']['salvaged_revenue']:.2f}")
+        st.write(f"**Salvaged Revenue:** +₹{metrics['freshguard_ai']['salvaged_revenue']:.2f}")
         st.write(f"**Food Waste to Landfill:** {metrics['freshguard_ai']['food_waste_kg']} kg")
         st.write(f"**GHG Emissions Avoided:** {metrics['improvements']['co2e_avoided_kg']} kg CO₂e saved")
 
