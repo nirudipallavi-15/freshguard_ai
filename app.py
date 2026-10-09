@@ -166,7 +166,7 @@ with tab1:
     table_data = []
     for r in filtered_recs:
         table_data.append({
-            "SKU": r["SKU"],
+           "SKU": r.get("SKU", "Unknown"),
             "Product": r["name"],
             "Store": r["store"],
             "Stock": r["current_stock"],
