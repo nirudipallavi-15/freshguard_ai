@@ -1,0 +1,5 @@
+# FreshGuard AI - Streamlit Dependencies
+# Note: SciPy is intentionally excluded to prevent Windows Application Control / WDAC DLL errors.
+# All forecasting, risk calculations, and optimization logic use pure Python rule-based algorithms.
+streamlit>=1.28.0
+pandas>=2.0.0
