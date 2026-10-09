@@ -116,13 +116,13 @@ st.write("Autonomous Multi-Agent System for Grocery Freshness, Dynamic Markdowns
 # Top KPI Metric Cards
 col1, col2, col3, col4 = st.columns(4)
 
-total_product ids = len(recommendations)
+total_product IDs = len(recommendations)
 high_risk = sum(1 for r in recommendations if r["risk_level"] in ("CRITICAL", "HIGH", "EXPIRED"))
 stockout_alerts = sum(1 for r in recommendations if r["action"] in ("REPLENISH", "TRANSFER_IN"))
 salvaged_val = sum(r["expected_effect"].get("salvaged_revenue", 0.0) for r in recommendations)
 
 with col1:
-    st.metric("📦 Monitored product ID", total_product ids, help="Total active product-store instances")
+    st.metric("📦 Monitored product ID", total_product IDs, help="Total active product-store instances")
 with col2:
     st.metric("⚠️ Perishability Risk", f"{high_risk} ", delta=f"{metrics['freshguard_ai']['waste_units']} units at risk", delta_color="inverse")
 with col3:
