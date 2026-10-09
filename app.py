@@ -124,11 +124,11 @@ salvaged_val = sum(r["expected_effect"].get("salvaged_revenue", 0.0) for r in re
 with col1:
     st.metric("📦 Monitored SKUs", total_skus, help="Total active product-store instances")
 with col2:
-    st.metric("⚠️ Perishability Risk", f"{high_risk} SKUs", delta=f"{metrics['freshguard_ai']['waste_units']} units at risk", delta_color="inverse")
+    st.metric("⚠️ Perishability Risk", f"{high_risk} ", delta=f"{metrics['freshguard_ai']['waste_units']} units at risk", delta_color="inverse")
 with col3:
-    st.metric("📉 Stockout Alerts", f"{stockout_alerts} SKUs", help="SKUs breached below reorder point")
+    st.metric("📉 Stockout Alerts", f"{stockout_alerts}", help="SKUs breached below reorder point")
 with col4:
-    st.metric("💰 Salvaged Revenue", f"${salvaged_val:.2f}", delta=f"-{metrics['improvements']['waste_reduction_pct']}% waste")
+    st.metric("💰 Salvaged Revenue", f"₹{salvaged_val:.2f}", delta=f"-{metrics['improvements']['waste_reduction_pct']}% waste")
 
 st.markdown("---")
 
