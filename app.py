@@ -172,8 +172,9 @@ with tab1:
             "Stock": r["current_stock"],
             "Forecast (/day)": r["daily_forecast"],
             "Days Left": r["effective_days"],
-            "Price": f"${r['unit_price']:.2f}",
+            "Price": f"₹{r['unit_price']:.2f}",
             "Risk": r["risk_level"],
+            
             "Action": r["action_label"],
             "Confidence": f"{r['confidence']}%",
             "Status": r["approval_status"]
